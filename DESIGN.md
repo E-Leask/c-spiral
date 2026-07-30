@@ -102,16 +102,16 @@ graph TD
 
 - **Frontend Core**: Vanilla HTML5, CSS3 (CSS Variables & Grid/Flexbox), JavaScript (ES Modules).
 - **Zero Dependencies**: Lightweight, lightning-fast load, zero build step needed.
-- **Hosting Target**: GitHub Pages / Cloudflare Pages / Vercel.
+- **Hosting Target**: **GitHub Pages** (Automated continuous deployment via `.github/workflows/deploy.yml` on push to `main`).
 
 ---
 
 ## 6. Implementation Roadmap
 
-- [ ] **Phase 1**: Project repository setup & DESIGN.md documentation *(Current)*
-- [ ] **Phase 2**: C Declaration Tokenizer & Spiral AST Resolver engine
-- [ ] **Phase 3**: Daily Seed Manager & Curated Declaration Bank
-- [ ] **Phase 4**: Interactive Frontend UI & Tile Decoder Game Engine
+- [x] **Phase 1**: Project repository setup & DESIGN.md documentation
+- [x] **Phase 2**: C Declaration Tokenizer & Spiral AST Resolver engine
+- [ ] **Phase 3 & 4**: Interactive Frontend UI & Tile Decoder Game Engine
 - [ ] **Phase 5**: SVG Clockwise Spiral Animation Layer
 - [ ] **Phase 6**: Streaks, LocalStorage, Share Generator & Rules Modal
 - [ ] **Phase 7**: Mobile Responsiveness, Polish & Final Verification
+
