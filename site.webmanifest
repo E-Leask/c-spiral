@@ -1,0 +1,17 @@
+{
+  "name": "C-Spiral: Daily C Declaration Game",
+  "short_name": "C-Spiral",
+  "description": "Decode complex C declarations daily using the Clockwise/Spiral rule.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0b0e17",
+  "theme_color": "#00f3ff",
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
