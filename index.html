@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>C-Spiral | The Daily C Declaration Game</title>
+  <meta name="description" content="A daily C programming declaration puzzle game based on David Anderson's Clockwise/Spiral Rule. Decode C declarations into plain English!">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <button id="btn-help" class="icon-btn" title="How to Play / Rules">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </button>
+        <button id="btn-archive" class="icon-btn" title="Practice / Archive Mode">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </button>
+      </div>
+      
+      <div class="header-center">
+        <h1 class="logo-text">C-SPIRAL <span class="spiral-icon">🌀</span></h1>
+        <div id="puzzle-badge" class="puzzle-badge">Daily Puzzle #1</div>
+      </div>
+      
+      <div class="header-right">
+        <button id="btn-stats" class="icon-btn" title="Statistics">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Game Area -->
+    <main class="game-main">
+      <!-- C Declaration Code Container -->
+      <section class="code-section">
+        <div class="code-card">
+          <div class="code-card-header">
+            <span class="code-lang">C DECLARATION</span>
+            <span id="code-difficulty" class="badge-difficulty">MEDIUM</span>
+          </div>
+          <div class="code-display-wrapper" id="code-wrapper">
+            <!-- Dynamic SVG Spiral Overlay -->
+            <svg id="spiral-svg" class="spiral-svg"></svg>
+            <!-- Code text spans -->
+            <div id="code-display" class="code-display"></div>
+          </div>
+          <div class="question-prompt">
+            Decode: <span id="prompt-identifier" class="prompt-target">str</span> is...
+          </div>
+        </div>
+      </section>
+
+      <!-- Previous Attempts Log -->
+      <section id="attempts-log" class="attempts-log-section"></section>
+
+      <!-- Current Sentence Target Track (Drop Zone) -->
+      <section class="target-section">
+        <div class="section-label">YOUR ANSWER SLOTS:</div>
+        <div id="target-track" class="target-track">
+          <!-- Drop slots rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- Shuffled Tile Pool -->
+      <section class="tiles-section">
+        <div class="section-label">AVAILABLE PHRASE TILES (TAP TO SELECT):</div>
+        <div id="tile-bank" class="tile-bank">
+          <!-- Tiles rendered dynamically -->
+        </div>
+      </section>
+
+      <!-- Action Buttons -->
+      <section class="controls-section">
+        <button id="btn-clear" class="btn btn-secondary">Clear Track</button>
+        <button id="btn-submit" class="btn btn-primary btn-glow" disabled>Submit Guess (<span id="attempts-count">4</span> left)</button>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <span>Based on David Anderson's <a href="https://c-faq.com/decl/spiral.anderson.html" target="_blank" rel="noopener">Clockwise/Spiral Rule</a></span>
+    </footer>
+  </div>
+
+  <!-- HELP / RULES MODAL -->
+  <div id="modal-help" class="modal-overlay hidden">
+    <div class="modal-card">
+      <button class="modal-close" data-close="modal-help">&times;</button>
+      <h2>🌀 The Clockwise/Spiral Rule</h2>
+      <p class="modal-intro">Any C declaration can be decoded into plain English in 3 steps:</p>
+      
+      <div class="rule-steps">
+        <div class="rule-step">
+          <span class="step-num">1</span>
+          <div>
+            <strong>Find the Identifier</strong>
+            <p>Start at the variable name (e.g. <code>str</code> or <code>fp</code>).</p>
+          </div>
+        </div>
+        <div class="rule-step">
+          <span class="step-num">2</span>
+          <div>
+            <strong>Move Clockwise / Spiral</strong>
+            <p>Read tokens moving right, turning left when hitting parens <code>()</code>, brackets <code>[]</code>, or semicolon <code>;</code>:</p>
+            <ul>
+              <li><code>[N]</code> &rarr; <em>"array N of..."</em></li>
+              <li><code>(type1, type2)</code> &rarr; <em>"function passing type1, type2 returning..."</em></li>
+              <li><code>*</code> &rarr; <em>"pointer to..."</em></li>
+            </ul>
+          </div>
+        </div>
+        <div class="rule-step">
+          <span class="step-num">3</span>
+          <div>
+            <strong>Parentheses First</strong>
+            <p>Always resolve elements inside parentheses before stepping outside!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-example">
+        <strong>Example: <code>char *str[10];</code></strong>
+        <ol>
+          <li>Start at <code>str</code> &rarr; <em>"str is..."</em></li>
+          <li>Move right to <code>[10]</code> &rarr; <em>"an array 10 of..."</em></li>
+          <li>Turn left to <code>*</code> &rarr; <em>"pointers to..."</em></li>
+          <li>Reach <code>char</code> &rarr; <em>"char"</em></li>
+        </ol>
+      </div>
+
+      <button class="btn btn-primary modal-action-btn" data-close="modal-help">Got it!</button>
+    </div>
+  </div>
+
+  <!-- STATS & WIN MODAL -->
+  <div id="modal-stats" class="modal-overlay hidden">
+    <div class="modal-card">
+      <button class="modal-close" data-close="modal-stats">&times;</button>
+      <h2 id="stats-title">📊 Game Statistics</h2>
+
+      <!-- End of Game Result Banner -->
+      <div id="game-result-banner" class="result-banner hidden">
+        <div id="result-emoji" class="result-emoji">🎉</div>
+        <div id="result-text" class="result-text">PRONUNCIATION MASTER!</div>
+        <div id="target-solution-display" class="target-solution-display"></div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div id="stat-played" class="stat-val">0</div>
+          <div class="stat-lbl">Played</div>
+        </div>
+        <div class="stat-box">
+          <div id="stat-winrate" class="stat-val">0%</div>
+          <div class="stat-lbl">Win %</div>
+        </div>
+        <div class="stat-box">
+          <div id="stat-streak" class="stat-val">0</div>
+          <div class="stat-lbl">Current Streak</div>
+        </div>
+        <div class="stat-box">
+          <div id="stat-maxstreak" class="stat-val">0</div>
+          <div class="stat-lbl">Max Streak</div>
+        </div>
+      </div>
+
+      <h3>Guess Distribution</h3>
+      <div id="guess-histogram" class="histogram-container">
+        <!-- Histogram bars -->
+      </div>
+
+      <div class="next-puzzle-box">
+        <div class="timer-label">NEXT PUZZLE IN</div>
+        <div id="countdown-timer" class="timer-val">12:34:56</div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="btn-share" class="btn btn-primary btn-glow">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:6px"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share Results
+        </button>
+      </div>
+      <div id="share-toast" class="share-toast hidden">Copied results to clipboard! 📋</div>
+    </div>
+  </div>
+
+  <script type="module" src="src/app.js"></script>
+</body>
+</html>
