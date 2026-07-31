@@ -78,7 +78,29 @@ class CSpiralApp {
 
   initGame() {
     const puzzle = this.engine.puzzle;
-    this.selectedTiles = [this.engine.startTile];
+    
+    // Calculate contiguous correct prefix from existing guesses (if any)
+    this.lockedPrefixTiles = [this.engine.startTile];
+    if (this.engine.state.guesses.length > 0) {
+      const lastGuess = this.engine.state.guesses[this.engine.state.guesses.length - 1];
+      let prefixLen = 0;
+      for (let i = 0; i < lastGuess.feedback.length; i++) {
+        if (lastGuess.feedback[i] === 'correct') {
+          prefixLen++;
+        } else {
+          break;
+        }
+      }
+      if (prefixLen > 0) {
+        // Reconstruct tile objects from target sentence
+        this.lockedPrefixTiles = puzzle.targetSentence.slice(0, prefixLen).map((text, idx) => {
+          if (idx === 0) return this.engine.startTile;
+          return { id: `target_${idx}`, text, isTarget: true };
+        });
+      }
+    }
+
+    this.selectedTiles = [...this.lockedPrefixTiles];
     
     if (this.engine.isPracticeMode) {
       this.puzzleBadgeEl.textContent = `PRACTICE 🎲 (${puzzle.title})`;
@@ -104,16 +126,17 @@ class CSpiralApp {
     this.initGame();
   }
 
-
   renderUI() {
     const puzzle = this.engine.puzzle;
     const attemptsLeft = 4 - this.engine.state.guesses.length;
+    const lockedLen = this.lockedPrefixTiles ? this.lockedPrefixTiles.length : 1;
 
     renderTargetTrack(
       puzzle, 
       this.selectedTiles, 
       this.targetTrackEl, 
-      (tile) => this.removeSelectedTile(tile)
+      (tile) => this.removeSelectedTile(tile),
+      lockedLen
     );
 
     renderTileBank(
@@ -139,14 +162,16 @@ class CSpiralApp {
 
   removeSelectedTile(tile) {
     if (this.engine.state.isCompleted) return;
-    if (tile.isStart) return; // Locked starting variable tile cannot be removed
+    const idx = this.selectedTiles.findIndex(t => t.id === tile.id);
+    const lockedLen = this.lockedPrefixTiles ? this.lockedPrefixTiles.length : 1;
+    if (idx < lockedLen) return; // Verified correct prefix tiles cannot be removed
     this.selectedTiles = this.selectedTiles.filter(t => t.id !== tile.id);
     this.renderUI();
   }
 
   clearSelection() {
     if (this.engine.state.isCompleted) return;
-    this.selectedTiles = [this.engine.startTile];
+    this.selectedTiles = [...(this.lockedPrefixTiles || [this.engine.startTile])];
     this.renderUI();
   }
 
@@ -159,10 +184,21 @@ class CSpiralApp {
       this.finishGameUI();
       setTimeout(() => this.openStatsModal(), 800);
     } else {
-      this.selectedTiles = [this.engine.startTile];
+      // Calculate contiguous correct prefix length starting from index 0
+      let prefixLen = 0;
+      for (let i = 0; i < res.feedback.length; i++) {
+        if (res.feedback[i] === 'correct') {
+          prefixLen++;
+        } else {
+          break;
+        }
+      }
+      this.lockedPrefixTiles = this.selectedTiles.slice(0, prefixLen);
+      this.selectedTiles = [...this.lockedPrefixTiles];
       this.renderUI();
     }
   }
+
 
 
   finishGameUI() {

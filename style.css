@@ -397,10 +397,29 @@ body {
   background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(0, 162, 255, 0.15));
   border: 1.5px solid var(--color-cyan);
   color: #fff;
-  box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
+.phrase-tile.locked-correct-tile {
+  background: rgba(0, 184, 98, 0.15);
+  border: 1.5px solid var(--color-green);
+  color: #fff;
+  box-shadow: 0 0 10px rgba(0, 255, 157, 0.2);
   opacity: 1 !important;
   white-space: nowrap;
 }
+
+.correct-badge {
+  font-size: 0.7rem;
+  font-weight: 800;
+  background: var(--color-green);
+  color: #0b0e17;
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-right: 4px;
+  box-shadow: 0 0 6px rgba(0, 255, 157, 0.4);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+}
+
 
 .start-pin-badge {
   font-size: 0.65rem;

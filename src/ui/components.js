@@ -110,7 +110,7 @@ export function renderTileBank(tileBank, selectedTiles, tileBankEl, onTileClick)
 }
 
 
-export function renderTargetTrack(puzzle, selectedTiles, targetTrackEl, onSlotClick) {
+export function renderTargetTrack(puzzle, selectedTiles, targetTrackEl, onSlotClick, lockedPrefixLength = 1) {
   targetTrackEl.innerHTML = '';
   
   const slotCount = puzzle.targetSentence.length;
@@ -118,11 +118,17 @@ export function renderTargetTrack(puzzle, selectedTiles, targetTrackEl, onSlotCl
   for (let i = 0; i < slotCount; i++) {
     const tile = selectedTiles[i];
     const slotEl = document.createElement('button');
+    const isLocked = i < lockedPrefixLength;
     
     if (tile && tile.isStart) {
       slotEl.className = 'phrase-tile start-tile in-target';
       slotEl.innerHTML = `<span class="start-pin-badge">START 🌀</span> ${tile.text}`;
       slotEl.setAttribute('title', 'Given starting variable tile');
+      slotEl.style.cursor = 'default';
+    } else if (tile && isLocked) {
+      slotEl.className = 'phrase-tile locked-correct-tile in-target';
+      slotEl.innerHTML = `<span class="correct-badge">✓</span> ${tile.text}`;
+      slotEl.setAttribute('title', 'Verified correct from previous attempt');
       slotEl.style.cursor = 'default';
     } else if (tile) {
       slotEl.className = 'phrase-tile in-target';
@@ -138,6 +144,7 @@ export function renderTargetTrack(puzzle, selectedTiles, targetTrackEl, onSlotCl
     targetTrackEl.appendChild(slotEl);
   }
 }
+
 
 
 export function renderAttemptsLog(guesses, attemptsLogEl) {
