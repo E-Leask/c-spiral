@@ -1,7 +1,7 @@
 /**
  * Curated Database of C Declarations for C-Spiral
- * Each puzzle includes granular tokenized spiral steps with natural English articles (a/an),
- * elemental distractor tiles, and educational explanations based on David Anderson's Clockwise/Spiral Rule.
+ * Each puzzle includes granular tokenized spiral steps, fully deconstructed qualifiers (constant/volatile/const),
+ * natural English articles (a/an) for placed slots, and educational explanations based on David Anderson's Clockwise/Spiral Rule.
  */
 
 export const DECLARATIONS = [
@@ -135,7 +135,8 @@ export const DECLARATIONS = [
     title: "Const Pointer to Const Char",
     targetSentence: [
       "chptr is",
-      "a constant pointer",
+      "a constant",
+      "pointer",
       "to",
       "const",
       "char"
@@ -143,7 +144,7 @@ export const DECLARATIONS = [
     distractors: [
       "an array 5",
       "of",
-      "a volatile pointer",
+      "a volatile",
       "int",
       "a function"
     ],
@@ -317,7 +318,8 @@ export const DECLARATIONS = [
       "tbl is",
       "a pointer",
       "to",
-      "a constant pointer",
+      "a constant",
+      "pointer",
       "to",
       "volatile",
       "int"
