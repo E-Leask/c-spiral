@@ -322,14 +322,15 @@ body {
 
 .target-track {
   display: flex;
-  flex-wrap: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
   min-height: 56px;
-  padding: 0.5rem;
+  padding: 0.6rem;
   background: rgba(8, 11, 18, 0.8);
   border: 2px dashed var(--bg-card-border);
   border-radius: 10px;
   align-items: center;
+  overflow-x: auto;
 }
 
 .tile-bank {
@@ -337,7 +338,7 @@ body {
   flex-wrap: wrap;
   gap: 0.5rem;
   min-height: 80px;
-  padding: 0.5rem;
+  padding: 0.6rem;
   background: var(--bg-card);
   border: 1px solid var(--bg-card-border);
   border-radius: 10px;
@@ -356,10 +357,12 @@ body {
   cursor: pointer;
   user-select: none;
   transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.3rem;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .phrase-tile:hover {
@@ -374,6 +377,7 @@ body {
   color: var(--text-main);
   text-transform: capitalize;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .phrase-tile.tile-in-bank:hover {
@@ -386,8 +390,8 @@ body {
   background: rgba(0, 243, 255, 0.1);
   border-color: var(--color-cyan);
   color: #fff;
+  white-space: nowrap;
 }
-
 
 .phrase-tile.start-tile {
   background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(0, 162, 255, 0.15));
@@ -395,6 +399,7 @@ body {
   color: #fff;
   box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
   opacity: 1 !important;
+  white-space: nowrap;
 }
 
 .start-pin-badge {
@@ -407,7 +412,11 @@ body {
   margin-right: 4px;
   letter-spacing: 0.5px;
   box-shadow: 0 0 6px rgba(0, 243, 255, 0.4);
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
+
 
 
 /* Controls */
