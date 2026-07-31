@@ -397,6 +397,11 @@ body {
   background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(0, 162, 255, 0.15));
   border: 1.5px solid var(--color-cyan);
   color: #fff;
+  box-shadow: 0 0 12px rgba(0, 243, 255, 0.25);
+  opacity: 1 !important;
+  white-space: nowrap;
+}
+
 .phrase-tile.locked-correct-tile {
   background: rgba(0, 184, 98, 0.15);
   border: 1.5px solid var(--color-green);
@@ -405,6 +410,7 @@ body {
   opacity: 1 !important;
   white-space: nowrap;
 }
+
 
 .correct-badge {
   font-size: 0.7rem;
