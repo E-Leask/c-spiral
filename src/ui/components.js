@@ -82,6 +82,22 @@ export function drawSpiralPath(puzzle, svgEl, wrapperEl) {
   svgEl.appendChild(path);
 }
 
+/**
+ * Simplifies tile label for the available bank by hiding connectors (a, an, of, to, returning)
+ */
+export function getShortTileLabel(text) {
+  if (!text) return '';
+  let label = text.trim();
+  
+  // Strip leading articles "a ", "an "
+  label = label.replace(/^(a|an)\s+/i, '');
+
+  // Strip trailing connectors " of", " to", " returning"
+  label = label.replace(/\s+(of|to|returning)$/i, '');
+
+  return label;
+}
+
 export function renderTileBank(tileBank, selectedTiles, tileBankEl, onTileClick) {
   tileBankEl.innerHTML = '';
 
@@ -89,13 +105,15 @@ export function renderTileBank(tileBank, selectedTiles, tileBankEl, onTileClick)
     const isSelected = selectedTiles.some(t => t.id === tile.id);
     if (!isSelected) {
       const tileEl = document.createElement('button');
-      tileEl.className = 'phrase-tile';
-      tileEl.textContent = tile.text;
+      tileEl.className = 'phrase-tile tile-in-bank';
+      tileEl.textContent = getShortTileLabel(tile.text);
+      tileEl.setAttribute('title', `Full phrase: "${tile.text}"`);
       tileEl.addEventListener('click', () => onTileClick(tile));
       tileBankEl.appendChild(tileEl);
     }
   });
 }
+
 
 export function renderTargetTrack(puzzle, selectedTiles, targetTrackEl, onSlotClick) {
   targetTrackEl.innerHTML = '';

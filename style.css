@@ -348,8 +348,18 @@ body {
   box-shadow: 0 6px 14px rgba(0, 243, 255, 0.2);
 }
 
-.phrase-tile:active {
-  transform: translateY(0);
+.phrase-tile.tile-in-bank {
+  background: #182030;
+  border-color: #27344c;
+  color: var(--text-main);
+  text-transform: capitalize;
+  letter-spacing: 0.5px;
+}
+
+.phrase-tile.tile-in-bank:hover {
+  background: #202b40;
+  border-color: var(--color-cyan);
+  color: #fff;
 }
 
 .phrase-tile.in-target {
@@ -357,6 +367,7 @@ body {
   border-color: var(--color-cyan);
   color: #fff;
 }
+
 
 .phrase-tile.start-tile {
   background: linear-gradient(135deg, rgba(0, 243, 255, 0.2), rgba(0, 162, 255, 0.15));
