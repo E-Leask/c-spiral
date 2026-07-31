@@ -66,11 +66,19 @@ export function getRandomPuzzle() {
 }
 
 /**
- * Shuffles target sentence tiles and distractors into a single tile bank
+ * Returns the fixed starting tile and shuffled remaining tile bank
  */
 export function prepareTileBank(puzzle, dateString = null) {
-  const targetTiles = puzzle.targetSentence.map((text, idx) => ({
-    id: `target_${idx}`,
+  const startTile = {
+    id: 'start_tile_0',
+    text: puzzle.targetSentence[0],
+    isStart: true,
+    isTarget: true
+  };
+
+  // Remaining target tiles (excluding index 0)
+  const remainingTargetTiles = puzzle.targetSentence.slice(1).map((text, idx) => ({
+    id: `target_${idx + 1}`,
     text,
     isTarget: true
   }));
@@ -81,20 +89,21 @@ export function prepareTileBank(puzzle, dateString = null) {
     isTarget: false
   }));
 
-  const allTiles = [...targetTiles, ...distractorTiles];
+  const bankTiles = [...remainingTargetTiles, ...distractorTiles];
 
   // Seeded shuffle so daily puzzle tile pool is identical for everyone
   const seedStr = (dateString || puzzle.code) + '_tiles';
   const seed = hashString(seedStr);
   const rng = mulberry32(seed);
 
-  for (let i = allTiles.length - 1; i > 0; i--) {
+  for (let i = bankTiles.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
-    [allTiles[i], allTiles[j]] = [allTiles[j], allTiles[i]];
+    [bankTiles[i], bankTiles[j]] = [bankTiles[j], bankTiles[i]];
   }
 
-  return allTiles;
+  return { startTile, bankTiles };
 }
+
 
 /**
  * Validates a user's submitted tile sequence against target sentence.

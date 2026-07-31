@@ -74,6 +74,7 @@ class CSpiralApp {
 
   initGame() {
     const puzzle = this.engine.puzzle;
+    this.selectedTiles = [this.engine.startTile];
     
     this.puzzleBadgeEl.textContent = `Daily Puzzle #${puzzle.puzzleNumber}`;
     this.promptIdentifierEl.textContent = puzzle.identifier;
@@ -121,13 +122,14 @@ class CSpiralApp {
 
   removeSelectedTile(tile) {
     if (this.engine.state.isCompleted) return;
+    if (tile.isStart) return; // Locked starting variable tile cannot be removed
     this.selectedTiles = this.selectedTiles.filter(t => t.id !== tile.id);
     this.renderUI();
   }
 
   clearSelection() {
     if (this.engine.state.isCompleted) return;
-    this.selectedTiles = [];
+    this.selectedTiles = [this.engine.startTile];
     this.renderUI();
   }
 
@@ -140,10 +142,11 @@ class CSpiralApp {
       this.finishGameUI();
       setTimeout(() => this.openStatsModal(), 800);
     } else {
-      this.selectedTiles = [];
+      this.selectedTiles = [this.engine.startTile];
       this.renderUI();
     }
   }
+
 
   finishGameUI() {
     this.btnSubmit.disabled = true;

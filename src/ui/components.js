@@ -21,11 +21,18 @@ export function renderCodeDisplay(puzzle, codeDisplayEl) {
       fragments.push(document.createTextNode(code.slice(lastIdx, start)));
     }
 
+    const isStartToken = step.type === 'identifier';
     const span = document.createElement('span');
-    span.className = `code-token token-${step.type}`;
+    span.className = `code-token token-${step.type} ${isStartToken ? 'token-start-identifier' : ''}`;
     span.id = `token-span-${idx}`;
     span.setAttribute('data-step', idx);
-    span.textContent = code.slice(start, end);
+    
+    if (isStartToken) {
+      span.innerHTML = `${code.slice(start, end)} <span class="start-indicator">🌀 START</span>`;
+    } else {
+      span.textContent = code.slice(start, end);
+    }
+    
     fragments.push(span);
 
     lastIdx = end;
@@ -98,12 +105,18 @@ export function renderTargetTrack(puzzle, selectedTiles, targetTrackEl, onSlotCl
   for (let i = 0; i < slotCount; i++) {
     const tile = selectedTiles[i];
     const slotEl = document.createElement('button');
-    slotEl.className = `phrase-tile ${tile ? 'in-target' : 'empty-slot'}`;
     
-    if (tile) {
+    if (tile && tile.isStart) {
+      slotEl.className = 'phrase-tile start-tile in-target';
+      slotEl.innerHTML = `<span class="start-pin-badge">START 🌀</span> ${tile.text}`;
+      slotEl.setAttribute('title', 'Given starting variable tile');
+      slotEl.style.cursor = 'default';
+    } else if (tile) {
+      slotEl.className = 'phrase-tile in-target';
       slotEl.textContent = tile.text;
       slotEl.addEventListener('click', () => onSlotClick(tile));
     } else {
+      slotEl.className = 'phrase-tile empty-slot';
       slotEl.textContent = `Slot #${i + 1}`;
       slotEl.style.opacity = '0.4';
       slotEl.style.borderStyle = 'dashed';
@@ -112,6 +125,7 @@ export function renderTargetTrack(puzzle, selectedTiles, targetTrackEl, onSlotCl
     targetTrackEl.appendChild(slotEl);
   }
 }
+
 
 export function renderAttemptsLog(guesses, attemptsLogEl) {
   attemptsLogEl.innerHTML = '';

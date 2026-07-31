@@ -11,9 +11,12 @@ export class DailyEngine {
   constructor(dateString = null) {
     this.dateString = dateString || new Date().toISOString().split('T')[0];
     this.puzzle = getDailyPuzzle(this.dateString);
-    this.tileBank = prepareTileBank(this.puzzle, this.dateString);
+    const { startTile, bankTiles } = prepareTileBank(this.puzzle, this.dateString);
+    this.startTile = startTile;
+    this.tileBank = bankTiles;
     this.state = this.loadState();
   }
+
 
   loadState() {
     try {
