@@ -1,6 +1,6 @@
 /**
  * Curated Database of C Declarations for C-Spiral
- * Each puzzle includes granular tokenized spiral steps, target English translations,
+ * Each puzzle includes granular tokenized spiral steps, fully expanded function parameter translations,
  * elemental distractor tiles, and educational explanations based on David Anderson's Clockwise/Spiral Rule.
  */
 
@@ -99,7 +99,13 @@ export const DECLARATIONS = [
       "fp is",
       "pointer",
       "to",
-      "function (int, float *)",
+      "function",
+      "passing",
+      "int",
+      "and",
+      "pointer",
+      "to",
+      "float",
       "returning",
       "pointer",
       "to",
@@ -115,11 +121,11 @@ export const DECLARATIONS = [
     spiralSequence: [
       { token: "fp", range: [8, 10], type: "identifier", phrase: "fp is" },
       { token: "*", range: [7, 8], type: "pointer", phrase: "pointer to" },
-      { token: "(int, float *)", range: [11, 25], type: "function", phrase: "function (int, float *) returning" },
+      { token: "(int, float *)", range: [11, 25], type: "function", phrase: "function passing int and pointer to float returning" },
       { token: "*", range: [5, 6], type: "pointer", phrase: "pointer to" },
       { token: "char", range: [0, 4], type: "basetype", phrase: "char" }
     ],
-    explanation: "Start at `fp` inside `(*fp)`. Turn left to `*` (pointer to). Step outside parens right to `(int, float *)` (function returning). Turn left to `*` (pointer to) then `char`."
+    explanation: "Start at `fp` inside `(*fp)`. Turn left to `*` (pointer to). Step outside parens right to `(int, float *)` (function passing int and pointer to float returning). Turn left to `*` (pointer to) then `char`."
   },
   {
     id: 5,
@@ -170,7 +176,7 @@ export const DECLARATIONS = [
       "int"
     ],
     distractors: [
-      "(int)",
+      "passing",
       "void",
       "float",
       "constant"
@@ -194,11 +200,23 @@ export const DECLARATIONS = [
     title: "The Ultimate C Signal Handler",
     targetSentence: [
       "signal is",
-      "function (int, void (*fp)(int))",
+      "function",
+      "passing",
+      "int",
+      "and",
+      "pointer",
+      "to",
+      "function",
+      "passing",
+      "int",
+      "returning",
+      "void",
       "returning",
       "pointer",
       "to",
-      "function (int)",
+      "function",
+      "passing",
+      "int",
       "returning",
       "void"
     ],
@@ -211,9 +229,9 @@ export const DECLARATIONS = [
     ],
     spiralSequence: [
       { token: "signal", range: [6, 12], type: "identifier", phrase: "signal is" },
-      { token: "(int, void (*fp)(int))", range: [12, 35], type: "function", phrase: "function (int, void (*fp)(int)) returning" },
+      { token: "(int, void (*fp)(int))", range: [12, 35], type: "function", phrase: "function passing int and pointer to function passing int returning void returning" },
       { token: "*", range: [5, 6], type: "pointer", phrase: "pointer to" },
-      { token: "(int)", range: [36, 41], type: "function", phrase: "function (int) returning" },
+      { token: "(int)", range: [36, 41], type: "function", phrase: "function passing int returning" },
       { token: "void", range: [0, 4], type: "basetype", phrase: "void" }
     ],
     explanation: "Start at `signal`. It is inside parens `(*signal(...))`. Right side gives argument list `(int, void (*fp)(int))`. Turn left inside parens to `*` (pointer to). Step out right to `(int)` (function returning). Turn left to `void`."
@@ -267,12 +285,16 @@ export const DECLARATIONS = [
       "of",
       "pointers",
       "to",
-      "functions (char *)",
+      "functions",
+      "passing",
+      "pointer",
+      "to",
+      "char",
       "returning",
       "int"
     ],
     distractors: [
-      "pointer to",
+      "constant",
       "void",
       "float",
       "double"
@@ -281,7 +303,7 @@ export const DECLARATIONS = [
       { token: "handler", range: [6, 13], type: "identifier", phrase: "handler is" },
       { token: "[3]", range: [13, 16], type: "array", phrase: "array 3 of" },
       { token: "*", range: [5, 6], type: "pointer", phrase: "pointers to" },
-      { token: "(char *)", range: [17, 25], type: "function", phrase: "functions (char *) returning" },
+      { token: "(char *)", range: [17, 25], type: "function", phrase: "functions passing pointer to char returning" },
       { token: "int", range: [0, 3], type: "basetype", phrase: "int" }
     ],
     explanation: "Start at `handler` inside parens. Move right to `[3]` (array 3 of). Turn left to `*` (pointers to). Step outside parens right to `(char *)` (functions returning). Turn left to `int`."
