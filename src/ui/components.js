@@ -83,20 +83,15 @@ export function drawSpiralPath(puzzle, svgEl, wrapperEl) {
 }
 
 /**
- * Simplifies tile label for the available bank by hiding connectors (a, an, of, to, returning)
+ * Formats elemental tile label for display in the available tile bank
  */
 export function getShortTileLabel(text) {
   if (!text) return '';
   let label = text.trim();
-  
-  // Strip leading articles "a ", "an "
   label = label.replace(/^(a|an)\s+/i, '');
-
-  // Strip trailing connectors " of", " to", " returning"
-  label = label.replace(/\s+(of|to|returning)$/i, '');
-
   return label;
 }
+
 
 export function renderTileBank(tileBank, selectedTiles, tileBankEl, onTileClick) {
   tileBankEl.innerHTML = '';
