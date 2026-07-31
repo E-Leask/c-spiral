@@ -2,7 +2,7 @@
  * Daily Game State Engine & LocalStorage Manager
  */
 
-import { getDailyPuzzle, prepareTileBank, validateSubmission, isSubmissionPerfect } from '../parser/spiralParser.js';
+import { getDailyPuzzle, getRandomPuzzle, prepareTileBank, validateSubmission, isSubmissionPerfect } from '../parser/spiralParser.js';
 
 const STORAGE_KEY = 'c_spiral_state_v1';
 const MAX_ATTEMPTS = 4;
@@ -10,12 +10,31 @@ const MAX_ATTEMPTS = 4;
 export class DailyEngine {
   constructor(dateString = null) {
     this.dateString = dateString || new Date().toISOString().split('T')[0];
+    this.isPracticeMode = false;
     this.puzzle = getDailyPuzzle(this.dateString);
     const { startTile, bankTiles } = prepareTileBank(this.puzzle, this.dateString);
     this.startTile = startTile;
     this.tileBank = bankTiles;
     this.state = this.loadState();
   }
+
+  loadRandomPuzzle() {
+    // Pick a random puzzle that is different from current if possible
+    let newPuzzle = getRandomPuzzle();
+    if (this.puzzle && newPuzzle.id === this.puzzle.id) {
+      newPuzzle = getRandomPuzzle();
+    }
+    this.puzzle = newPuzzle;
+    const { startTile, bankTiles } = prepareTileBank(this.puzzle, 'random_' + Math.random());
+    this.startTile = startTile;
+    this.tileBank = bankTiles;
+    this.isPracticeMode = true;
+    this.state.guesses = [];
+    this.state.isCompleted = false;
+    this.state.isWon = false;
+    return this.puzzle;
+  }
+
 
 
   loadState() {

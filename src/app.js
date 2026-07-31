@@ -36,6 +36,8 @@ class CSpiralApp {
 
     this.btnSubmit = document.getElementById('btn-submit');
     this.btnClear = document.getElementById('btn-clear');
+    this.btnRandom = document.getElementById('btn-random');
+    this.btnRandomHeader = document.getElementById('btn-random-header');
     this.btnHelp = document.getElementById('btn-help');
     this.btnStats = document.getElementById('btn-stats');
     this.btnShare = document.getElementById('btn-share');
@@ -51,6 +53,8 @@ class CSpiralApp {
   bindEvents() {
     this.btnSubmit.addEventListener('click', () => this.handleSubmission());
     this.btnClear.addEventListener('click', () => this.clearSelection());
+    if (this.btnRandom) this.btnRandom.addEventListener('click', () => this.handleNextRandomPuzzle());
+    if (this.btnRandomHeader) this.btnRandomHeader.addEventListener('click', () => this.handleNextRandomPuzzle());
 
     this.btnHelp.addEventListener('click', () => this.openModal('modal-help'));
     this.btnStats.addEventListener('click', () => this.openStatsModal());
@@ -76,7 +80,12 @@ class CSpiralApp {
     const puzzle = this.engine.puzzle;
     this.selectedTiles = [this.engine.startTile];
     
-    this.puzzleBadgeEl.textContent = `Daily Puzzle #${puzzle.puzzleNumber}`;
+    if (this.engine.isPracticeMode) {
+      this.puzzleBadgeEl.textContent = `PRACTICE 🎲 (${puzzle.title})`;
+    } else {
+      this.puzzleBadgeEl.textContent = `Daily Puzzle #${puzzle.puzzleNumber}`;
+    }
+    
     this.promptIdentifierEl.textContent = puzzle.identifier;
     this.codeDifficultyEl.textContent = puzzle.difficulty.toUpperCase();
 
@@ -87,6 +96,14 @@ class CSpiralApp {
       this.finishGameUI();
     }
   }
+
+  handleNextRandomPuzzle() {
+    this.engine.loadRandomPuzzle();
+    this.spiralSvgEl.innerHTML = '';
+    this.btnClear.disabled = false;
+    this.initGame();
+  }
+
 
   renderUI() {
     const puzzle = this.engine.puzzle;

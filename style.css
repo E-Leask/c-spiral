@@ -72,12 +72,32 @@ body {
   transition: all 0.2s ease;
   display: flex;
   align-items: center;
-  justify-content: center;
+.icon-btn.btn-random-icon {
+  background: rgba(255, 0, 127, 0.1);
+  border-color: rgba(255, 0, 127, 0.4);
+  color: var(--color-magenta);
+  padding: 0.5rem 0.75rem;
 }
 
-.icon-btn:hover {
-  border-color: var(--color-cyan);
-  color: var(--color-cyan);
+.icon-btn.btn-random-icon:hover {
+  border-color: var(--color-magenta);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255, 0, 127, 0.4);
+}
+
+.btn-random-action {
+  background: rgba(255, 0, 127, 0.12);
+  border: 1px solid rgba(255, 0, 127, 0.4);
+  color: var(--color-magenta);
+}
+
+.btn-random-action:hover {
+  background: rgba(255, 0, 127, 0.25);
+  border-color: var(--color-magenta);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255, 0, 127, 0.3);
+}
+
   box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
 }
 
